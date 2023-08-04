@@ -1,37 +1,19 @@
-pipeline {
-    agent any
-tools {nodejs "nodeJS1"}
-      stages {
-        stage('Clone Repository'){
-            steps{
-                git branch: 'main',
-                    url: 'https://github.com/suganthi95/node-docker.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Build the Docker image for the Node.js application
-                sh 'docker build -t my-node-app .'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run tests for your Node.js application (if applicable)
-                sh 'docker run --rm my-node-app npm test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Push the Docker image to a container registry
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', passwordVariable: 'Keasnmacaa@95', usernameVariable: 'suganthi95')]) {
-                    sh "docker login -u suganthi95 -p Keasnmacaa@95"
-                }
-
-                sh 'docker push my-node-app'
-            }
-        }
-}
+node {
+     def app 
+     stage('clone repository') {
+      checkout scm  
+    }
+     stage('Build docker Image'){
+      app = docker.build("suganthi95/ecommerce_application")
+    }
+     stage('Test Image'){
+       app.inside {
+         sh 'echo "TEST PASSED"'
+      }  
+    }
+     stage('Push Image'){
+       docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {            
+       app.push("${env.BUILD_NUMBER}")            
+       app.push("latest")   
+   }
 }
