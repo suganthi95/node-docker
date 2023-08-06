@@ -1,9 +1,9 @@
 pipeline {
     agent any 
-        options {
-            image 'node:16.17.1' 
-            args '-p 6000:4000' 
-        }
+//options {
+         //   image 'node:16.17.1' 
+            //args '-p 6000:4000' 
+        //}
     
     
     stages {
