@@ -14,7 +14,7 @@ pipeline {
             steps {
                 // Build the Docker image
                 // Make sure you have a Dockerfile in your repository
-                sh 'docker build -t ecom-app .'
+                sh 'docker build -t my-node-app .'
             }
         }
 
