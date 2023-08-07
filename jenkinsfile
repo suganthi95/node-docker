@@ -1,51 +1,43 @@
 pipeline {
-    agent any 
-//options {
-         //   image 'node:16.17.1' 
-            //args '-p 6000:4000' 
-        //}
-    
-    
+    agent any
+
     stages {
-        stage('Clone git repository') {
+        stage('Checkout') {
             steps {
-                checkout scm 
+                // Checkout the source code from your version control system
+                // You may need to configure the repository URL and credentials
+                checkout scm
             }
         }
-        
-        stage('Install Dependencies') {
+
+        stage('Build') {
             steps {
-                sh 'npm install'
+                // Build the Docker image
+                // Make sure you have a Dockerfile in your repository
+                sh 'docker build -t my-node-app .'
             }
         }
-        
-        stage('Run Tests') {
+
+        stage('Test') {
             steps {
-                sh 'npm test'
+                // Run tests for your Node.js application
+                // Replace 'npm test' with your actual test command
+                sh 'docker run --rm my-node-app npm test'
             }
         }
-        
-        stage('Build Docker Image') {
+
+        stage('Deploy') {
             steps {
-                script {
-                    def appImage = docker.build("ecommerce_application/ecom-app-image:2")
-                    appImage.push()
-                }
-            }
-        }
-        
-        stage('Deploy to Production') {
-            steps {
-                script {
-                    // Assuming you have a server to deploy to and the appropriate credentials set up
-                   // withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', passwordVariable: 'Keasnmacaa@95', usernameVariable: 'suganthi95')]) {
-                        sh 'docker login -u suganthi95 -p Keasnmacaa@95'
-                        sh 'docker pull ecommerce_application/ecom-app-image:${env.BUILD_NUMBER}'
-                        sh 'docker run -d -p 6000:4000 ecommerce_application/ecom-app-image:${env.BUILD_NUMBER}'
-                    }
-                }
+                // Deploy the Docker image to your server or container registry
+                // Replace 'your-container-registry' with your actual registry
+                // Replace 'latest' with a specific version tag if desired
+                sh 'docker tag my-node-app ecommerce_application/my-node-app:latest'
+                sh 'docker push ecommerce_application/my-node-app:latest'
             }
         }
     }
+        }
+    }
+}
 
 
