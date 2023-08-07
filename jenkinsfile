@@ -1,38 +1,40 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                // Checkout the source code from your version control system
-                // You may need to configure the repository URL and credentials
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'start /B docker build -t my-node-app .'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run tests for your Node.js application
-                // Replace 'npm test' with your actual test command
-                sh 'docker run --rm my-node-app npm test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Deploy the Docker image to your server or container registry
-                // Replace 'your-container-registry' with your actual registry
-                // Replace 'latest' with a specific version tag if desired
-                sh 'docker tag my-node-app ecommerce_application/my-node-app:latest'
-                sh 'docker push ecommerce_application/my-node-app:latest'
-            }
-        }
+    environment {
+    registry = "suganthi95/ecommerce_application"
+    registryCredential = 'docker-hub-credential'
+    dockerImage = 'my-node-app'
     }
-        
+
+    agent any
+    stages {
+            stage('Cloning our Git') {
+                steps {
+                git 'https://github.com/suganthi95/node-docker.git'
+                }
+            }
+
+             stage('Building Docker Image') {
+                steps {
+                    script {
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
+                }
+            }
+
+            stage('Deploying Docker Image to Dockerhub') {
+                steps {
+                    script {
+                        docker.withRegistry('', registryCredential) {
+                        dockerImage.push()
+                        }
+                    }
+                }
+            }
+
+            stage('Cleaning Up') {
+                steps{
+                  sh "docker rmi --force $registry:$BUILD_NUMBER"
+                }
+            }
+        }
     }
