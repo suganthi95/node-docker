@@ -12,9 +12,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build the Docker image
-                // Make sure you have a Dockerfile in your repository
-                sh 'start /B docker build -t my-node-app .'
+                sh 'docker build -t my-node-app .'
             }
         }
 
