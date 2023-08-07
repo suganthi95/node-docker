@@ -28,22 +28,14 @@ pipeline {
                     script {
                        // docker.withRegistry('', registryCredential) {
                         //dockerImage.push()
-                          bat "docker run -p 6000:4000 node-appp" 
-                         
-                        }
-                    }
-                }
-            }
-            stage('Push docker image to docker hub'){
-                 steps {
-                    script {
-                       // docker.withRegistry('', registryCredential) {
-                        //dockerImage.push()
-                          //bat "docker run -p 6000:4000 my-node-app" 
-                          bat "docker tag my-node-app suganthi95/ecommerce_application:latest"
+                         // bat "docker run -p 6000:4000 node-appp" 
+                         bat "docker tag node-appp suganthi95/ecommerce_application:latest"
 
                          bat "docker push suganthi95/ecommerce_application:latest "
                         }
                     }
                 }
             }
+          
+            }
+}
