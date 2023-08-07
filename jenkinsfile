@@ -2,7 +2,7 @@ pipeline {
     environment {
     registry = "suganthi95/ecommerce_application"
     registryCredential = 'docker-hub-credential'
-    dockerImage = 'my-node-app'
+    dockerImage = 'node-appp'
     }
 
     agent any
@@ -17,18 +17,29 @@ pipeline {
              stage('Building Docker Image') {
                 steps {
                     script {
-                         bat 'docker build -t my-node-app .'
+                         bat 'docker build -t node-appp .'
 
                     }
                 }
             }
 
-            stage('Deploying Docker Image to Dockerhub') {
+            stage('Run the Docker Image') {
                 steps {
                     script {
                        // docker.withRegistry('', registryCredential) {
                         //dockerImage.push()
-                          bat "docker run -p 6000:4000 my-node-app" 
+                          bat "docker run -p 6000:4000 node-appp" 
+                         
+                        }
+                    }
+                }
+            }
+            stage('Push docker image to docker hub'){
+                 steps {
+                    script {
+                       // docker.withRegistry('', registryCredential) {
+                        //dockerImage.push()
+                          //bat "docker run -p 6000:4000 my-node-app" 
                           bat "docker tag my-node-app suganthi95/ecommerce_application:latest"
 
                          bat "docker push suganthi95/ecommerce_application:latest "
@@ -36,5 +47,4 @@ pipeline {
                     }
                 }
             }
-
            }
