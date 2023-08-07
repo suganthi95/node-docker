@@ -12,7 +12,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'docker build -t my-node-app .'
+                sh 'start /B docker build -t my-node-app .'
             }
         }
 
