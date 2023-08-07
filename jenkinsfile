@@ -29,7 +29,7 @@ pipeline {
                        // docker.withRegistry('', registryCredential) {
                         //dockerImage.push()
                           //bat "docker run -it -p 6000:4000 my-node-app" 
-                          bat "docker latest my-node-app suganthi95/ecommerce_application:latest"
+                          bat "docker tag my-node-app suganthi95/ecommerce_application:latest"
 
                          bat "docker push suganthi95/ecommerce_application:latest "
                         }
