@@ -9,7 +9,8 @@ pipeline {
     stages {
             stage('Cloning our Git') {
                 steps {
-                git 'https://github.com/suganthi95/node-docker.git'
+                //git 'https://github.com/suganthi95/node-docker.git'
+                          checkout scm
                 }
             }
 
