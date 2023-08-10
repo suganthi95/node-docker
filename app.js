@@ -48,5 +48,7 @@ app.use("/api/new", trendyRoute);
 //     })
 // }
 
-
+app.get("/", (req,res)=>{
+  res.send("jenkins configuration success");
+});
 app.listen(PORT, () => console.log(`Listening the port :${PORT}`));
