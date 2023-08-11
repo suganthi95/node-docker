@@ -17,7 +17,7 @@ pipeline {
              stage('Building Docker Image') {
                 steps {
                     script {
-                         bat 'docker build -t cici-pipeline-poc .'
+                         sh 'docker build -t cici-pipeline-poc .'
 
                     }
                 }
