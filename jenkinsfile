@@ -17,7 +17,7 @@ pipeline {
              stage('Building Docker Image') {
                 steps {
                     script {
-                         bat 'docker build -t node-appp .'
+                         bat 'docker build -t cici-pipeline-poc .'
 
                     }
                 }
@@ -29,7 +29,7 @@ pipeline {
                        // docker.withRegistry('', registryCredential) {
                         //dockerImage.push()
                          // bat "docker run -p 6000:4000 node-appp" 
-                         bat "docker tag node-appp suganthi95/ecommerce_application:latest"
+                         bat "docker tag cici-pipeline-poc suganthi95/ecommerce_application:latest"
 
                          bat "docker push suganthi95/ecommerce_application:latest "
                         }
